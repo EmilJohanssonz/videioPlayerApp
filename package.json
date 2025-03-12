@@ -10,6 +10,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@ffmpeg/core": "^0.12.10",
+    "@ffmpeg/ffmpeg": "^0.12.15",
     "@tailwindcss/vite": "^4.0.13",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
