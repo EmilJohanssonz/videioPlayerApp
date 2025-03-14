@@ -16,11 +16,14 @@ const FrameExtractor: React.FC<Props> = ({
   const [ffmpeg] = useState(new FFmpeg());
   const [loading, setLoading] = useState(false);
   const [frameUrl, setFrameUrl] = useState<string | null>(null);
+  const [frameTime, setFrameTime] = useState(selectedFrame);
+
   const videoRef = useRef<HTMLVideoElement>(null);
 
+  // Load FFmpeg once
   useEffect(() => {
     const loadFFmpeg = async () => {
-      if (!ffmpeg.isLoaded()) {
+      if (!ffmpeg.loaded) {
         try {
           await ffmpeg.load({
             coreURL:
@@ -36,22 +39,23 @@ const FrameExtractor: React.FC<Props> = ({
 
   useEffect(() => {
     if (videoRef.current) {
-      videoRef.current.currentTime = selectedFrame; // Update video time
+      videoRef.current.currentTime = frameTime; // Update video time
     }
-  }, [selectedFrame]);
+  }, [frameTime]);
 
   const extractFrame = async () => {
-    if (!videoFile || !ffmpeg.isLoaded()) return;
+    if (!videoFile || !ffmpeg.loaded || loading) return;
 
     setLoading(true);
+
     const inputFile = "input.mp4";
-    const outputFile = `frame_${selectedFrame}.jpg`;
+    const outputFile = `frame_${frameTime}.jpg`;
 
     try {
       await ffmpeg.writeFile(inputFile, await fetchFile(videoFile));
       await ffmpeg.exec([
         "-ss",
-        selectedFrame.toString(),
+        frameTime.toString(),
         "-i",
         inputFile,
         "-frames:v",
@@ -75,46 +79,54 @@ const FrameExtractor: React.FC<Props> = ({
 
   return (
     <div className="p-4">
-      <video
-        ref={videoRef}
-        src={URL.createObjectURL(videoFile)}
-        controls
-        className="w-full max-w-lg mx-auto mb-4"
-        onLoadedData={() => {
-          if (videoRef.current) {
-            videoRef.current.currentTime = selectedFrame;
-          }
-        }}
-      />
+      {videoFile && (
+        <>
+          {/* Video player */}
+          <video
+            ref={videoRef}
+            src={URL.createObjectURL(videoFile)}
+            controls
+            className="w-full max-w-lg mx-auto mb-4"
+            onTimeUpdate={(e) =>
+              setFrameTime(
+                Math.floor((e.target as HTMLVideoElement).currentTime),
+              )
+            }
+          />
 
-      {/* Custom slider to control video playback */}
-      <input
-        type="range"
-        min="0"
-        max={videoRef.current?.duration || 100}
-        value={selectedFrame}
-        onChange={(e) => {
-          const newTime = parseFloat(e.target.value);
-          if (videoRef.current) {
-            videoRef.current.currentTime = newTime; // Update video time
-          }
-          setFrameUrl(null); // Clear the previous frame URL
-        }}
-        className="w-full mt-2"
-      />
+          {/* Single slider to control both video and frame */}
+          <input
+            type="range"
+            min="0"
+            max={videoRef.current?.duration || 100}
+            value={frameTime}
+            onChange={(e) => {
+              const newTime = parseFloat(e.target.value);
+              setFrameTime(newTime);
+              if (videoRef.current) {
+                videoRef.current.currentTime = newTime; // Update video in real-time
+              }
+            }}
+            className="w-full mt-2"
+          />
 
-      {/* Button to extract frame */}
-      <button
-        onClick={extractFrame}
-        disabled={!videoFile || loading}
-        className="bg-blue-500 text-white p-2 rounded mt-2"
-      >
-        {loading ? "Extracting..." : "Extract Frame"}
-      </button>
+          {/* Button to extract frame */}
+          <button
+            onClick={extractFrame}
+            disabled={!videoFile || loading}
+            className="bg-blue-500 text-white p-2 rounded mt-2"
+          >
+            {loading ? "Extraherar..." : "Extrahera Frame"}
+          </button>
 
-      {loading && <p>Extraherar frame...</p>}
-      {frameUrl && (
-        <img src={frameUrl} alt="Extracted Frame" className="mt-2" />
+          {/* Preview of extracted frame */}
+          {frameUrl && (
+            <div className="mt-4">
+              <p>Vald Frame ({frameTime}s):</p>
+              <img src={frameUrl} alt="Selected Frame" className="mt-2" />
+            </div>
+          )}
+        </>
       )}
     </div>
   );
