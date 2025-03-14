@@ -1,3 +1,14 @@
+// FramePreview.tsx
+// Ansvar: Visar den extraherade framen.
+
+// Props:
+// frameURL → Bildens URL efter extrahering.
+// Funktionalitet:
+// Om en frame är extraherad → Visa bilden.
+// Annars → Visa inget.
+
+
+
 type Props = {
   frameURL: string | null;
 };

@@ -1,3 +1,15 @@
+// FrameSlider.tsx
+// Ansvar: Låter användaren välja en frame via en slider.
+
+// Props:
+// totalFrames → Max antal frames i videon
+// selectedFrame → Den nuvarande frame som är vald
+// onChange → Callback-funktion för att uppdatera valt frame
+// Funktionalitet:
+// Slider-element (<input type="range">) som gör det enkelt att navigera i videon.
+
+
+
 import { useCallback } from "react";
 
 type Props = {

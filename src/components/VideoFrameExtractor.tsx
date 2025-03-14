@@ -1,3 +1,13 @@
+// VideoFrameExtractor.tsx
+// Huvudkomponenten som hanterar video-uppladdning, val av frame och visning av den extraherade bilden.
+
+// State: Håller koll på den uppladdade videon, totalt antal frames, vald frame och extraherad frame-URL.
+// Komponenter som används:
+// VideoUploader → Laddar upp videon
+// FrameSlider → Väljer frame med en slider
+// FrameExtractor → Hanterar extrahering av frames med FFmpeg
+// FramePreview → Visar den extraherade bilden
+
 import { useState, useEffect } from "react";
 import VideoUploader from "./VideoUploader";
 import FrameSlider from "./FrameSlider";

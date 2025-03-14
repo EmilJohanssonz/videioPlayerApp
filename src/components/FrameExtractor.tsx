@@ -1,3 +1,18 @@
+// FrameExtractor.tsx
+// Ansvar: Hanterar FFmpeg-logiken och extraherar en bild från den valda framen.
+
+// Props:
+// videoFile → Den uppladdade videofilen
+// selectedFrame → Den frame som ska extraheras
+// onFrameExtracted → Callback för att skicka den extraherade bildens URL
+// Funktionalitet:
+// Laddar FFmpeg om det inte redan är inläst.
+// Skriver videofilen till FFmpeg:s filsystem.
+// Kör ett FFmpeg-kommando för att extrahera en bild vid en viss timestamp.
+// Skapar en URL till bilden och uppdaterar state.
+// Bugfix:
+// Undviker "memory access out of bounds" genom att säkerställa att FFmpeg är korrekt inläst och att videon har tillräckligt många frames.
+
 import { useState, useEffect, useRef } from "react";
 import { FFmpeg } from "@ffmpeg/ffmpeg";
 import { fetchFile } from "@ffmpeg/util";
