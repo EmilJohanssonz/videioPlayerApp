@@ -1,54 +1,66 @@
-# React + TypeScript + Vite
+# Video Frame Extractor
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Detta projekt är en React-applikation som låter användare ladda upp en MP4-video, välja en specifik frame och extrahera den som en bild med hjälp av **FFmpeg.wasm**.
 
-Currently, two official plugins are available:
+## 🚀 Funktioner
+- Ladda upp en video
+- Använd en slider för att välja en specifik frame
+- Förhandsgranska den valda framen
+- Extrahera och spara framen som en bild
+- Återställ allt och börja om
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🛠 Tekniker
+- **React (TypeScript)** – Frontend-ramverk
+- **Tailwind CSS** – Styling
+- **FFmpeg.wasm** – Videobearbetning
 
-## Expanding the ESLint configuration
+## 📦 Installation
+1. Klona detta repo:
+   ```sh
+   git clone https://github.com/EmilJohanssonz/videioPlayerApp.git
+   cd videioPlayerApp
+   ```
+2. Installera beroenden:
+   ```sh
+   npm install
+   ```
+3. Starta utvecklingsservern:
+   ```sh
+   npm run dev
+   ```
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## 🎥 Användning
+1. Ladda upp en MP4-video
+2. Använd slidern för att välja en frame 
+3. Klicka på **"Extrahera Frame"** för att generera en bild
+4. Förhandsgranska och spara framen
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+## 📌 Struktur
+```
+/video-frame-extractor
+│── src/
+│   ├── components/
+│   │   ├── VideoUploader.tsx
+│   │   ├── FrameSlider.tsx
+│   │   ├── FrameExtractor.tsx
+│   │   ├── FramePreview.tsx
+│   ├── App.tsx
+│── public/
+│── package.json
+│── README.md
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## ❗️ Vanliga problem & Lösningar
+### "Memory access out of bounds"-fel
+- Kontrollera att **frame-tiden** är inom videons längd.
+- Prova att byta `-ss` mot `-t` i FFmpeg-kommandot.
+- Rensa buffern innan en ny frame extraheras.
+- Låt den nya Url från vedion ladda innan man trycker på knappen för frame.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+### CORS-problem vid laddning av FFmpeg
+- FFmpeg laddas från **unpkg** – kontrollera att du har rätt URL i `coreURL`.
+- Om det fortfarande inte fungerar, testa att köra med en lokal **FFmpeg-core**.
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
-```
+## 📄 Licens
+Detta projekt är open-source och kan användas fritt! 🚀
+
