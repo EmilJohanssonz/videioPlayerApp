@@ -38,6 +38,7 @@ Detta projekt är en React-applikation som låter användare ladda upp en MP4-vi
 2. Använd slidern för att välja en frame
 3. Klicka på **"Extrahera Frame"** för att generera en bild
 4. Förhandsgranska och spara framen
+5. Tips bäst att ta framen från början sedan använda slider för ta nästa
 
 ## 📌 Struktur
 
