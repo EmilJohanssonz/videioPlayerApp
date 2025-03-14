@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import VideoUploader from "./VideoUploader";
 import FrameSlider from "./FrameSlider";
 import FrameExtractor from "./FrameExtractor";
@@ -13,6 +13,13 @@ const VideoFrameExtractor: React.FC = () => {
   const handleFrameExtracted = (url: string) => {
     setFrameURL(url);
   };
+
+  // 🔹 Extrahera frame automatiskt när `selectedFrame` ändras
+  useEffect(() => {
+    if (videoFile) {
+      console.log("Extracting frame at:", selectedFrame);
+    }
+  }, [selectedFrame, videoFile]);
 
   return (
     <div className="p-6 bg-white shadow-lg rounded-lg">
